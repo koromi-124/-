@@ -26,8 +26,8 @@ public:
     string getTitle() const { return title; }
     bool isFull() const { return enrolledStudents.size() >= capacity; }
 
-    void addStudent(Student* student);
-    void removeStudent(Student* student);
+    void addStudent(Student* const student);
+    void removeStudent(Student* const student);
     void printStudents() const;
     int getCapacity() const;
     int getEnrolledCount() const;
