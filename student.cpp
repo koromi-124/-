@@ -44,3 +44,8 @@ void Student::printCourses() const {
         cout << " - " << c->getCode() << ": " << c->getTitle() << endl;
     }
 }
+
+bool Student::verifyPassword(const string& input) const
+{
+    return input == password;
+}

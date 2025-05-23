@@ -15,9 +15,11 @@ private:
     string id;
     string name;
     vector<Course*> enrolledCourses;
+    string password;
 
 public:
-    Student(string id, string name) : id(id), name(name) {}
+    Student(string id, string name, string password)
+        : id(id), name(name), password(password){}
 
     string getId() const { return id; }
     string getName() const { return name; }
@@ -25,6 +27,8 @@ public:
     void enroll(Course* course);
     void drop(Course* course);
     void printCourses() const;
+    bool verifyPassword(const string& input) const;
+
 };
 
 #endif // !STUDENT_H

@@ -31,6 +31,7 @@ public:
     void printStudents() const;
     int getCapacity() const;
     int getEnrolledCount() const;
+
 };
 
 #endif
