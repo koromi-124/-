@@ -1,6 +1,20 @@
 ﻿#include"student.h"
 #include "course.h"
 
+Student* findStudent(vector<Student>& students, const string& id) {
+    auto it = find_if(students.begin(), students.end(), [&](const Student& s) {
+        return s.getId() == id;
+        });
+    return it != students.end() ? &(*it) : nullptr;
+}
+
+Course* findCourse(vector<Course>& courses, const string& code) {
+    auto it = find_if(courses.begin(), courses.end(), [&](const Course& c) {
+        return c.getCode() == code;
+        });
+    return it != courses.end() ? &(*it) : nullptr;
+}
+
 int main() {
     vector<Student> students;
     vector<Course> courses;
@@ -21,134 +35,90 @@ int main() {
             cout << "輸入學生ID：";
             string sid, pwd;
             getline(cin, sid);
+            Student* currentStudent = findStudent(students, sid);
 
-            auto sit = find_if(students.begin(), students.end(), [&](Student& s) {
-                return s.getId() == sid;
-                });
-
-            if (sit != students.end()) {
+            if (currentStudent) {
                 cout << "輸入密碼：";
                 getline(cin, pwd);
+                if (currentStudent->verifyPassword(pwd)) {
+                    cout << "✅ 登入成功！" << endl;
+                    while (true) {
+                        cout << endl << "===== 學生選課系統 =====" << endl;
+                        cout << "1. 加選課程" << endl;
+                        cout << "2. 退選課程" << endl;
+                        cout << "3. 顯示我的課表" << endl;
+                        cout << "4. 顯示課程學生名單" << endl;
+                        cout << "5. 顯示所有課程" << endl;
+                        cout << "6. 登出" << endl;
+                        cout << "請輸入選項：";
+                        cin >> choice;
+                        cin.ignore();
 
-                if (sit->verifyPassword(pwd)) {
-                    cout << " 登入成功！" << endl;
-                }
-                else {
-                    cout << " 密碼錯誤，請重試。" << endl;
-                }
-            }
-            else {
-                cout << "找不到該學生。" << endl;
-            }
+                        if (choice == 1) {
+                            string ccode;
+                            cout << "輸入課程代碼：";
+                            getline(cin, ccode);
+                            Course* course = findCourse(courses, ccode);
+                            if (course) currentStudent->enroll(course);
+                            else cout << "找不到課程。" << endl;
+                        }
+                        else if (choice == 2) {
+                            string ccode;
+                            cout << "輸入課程代碼：";
+                            getline(cin, ccode);
+                            Course* course = findCourse(courses, ccode);
+                            if (course) currentStudent->drop(course);
+                            else cout << "找不到課程。" << endl;
+                        }
+                        else if (choice == 3) {
+                            currentStudent->printCourses();
+                        }
+                        else if (choice == 4) {
+                            string ccode;
+                            cout << "輸入課程代碼：";
+                            getline(cin, ccode);
+                            auto cit = find_if(courses.begin(), courses.end(), [&](Course& c) {
+                                return c.getCode() == ccode;
+                                });
+                            if (cit != courses.end()) {
+                                cit->printStudents();
+                            }
+                            else {
+                                cout << "找不到該課程。" << endl;
+                            }
+                        }
 
-            while (true) {
-                cout << endl << "===== 學生選課系統 =====" << endl;
-                cout << "1. 學生加選課程" << endl;
-                cout << "2. 學生退選課程" << endl;
-                cout << "3. 顯示學生課表" << endl;
-                cout << "4. 顯示課程學生名單" << endl;
-                cout << "5. 顯示所有課程" << endl;
-                cout << "6. 離開" << endl;
-                cout << "請輸入選項：";
-                cin >> choice;
-                cin.ignore();
+                        else if (choice == 5) {
+                            if (courses.empty()) {
+                                cout << "尚未建立任何課程。" << endl;
+                            }
+                            else {
+                                cout << "所有課程清單：" << endl;
+                                for (const auto& c : courses) {
+                                    cout << " - " << c.getCode() << ": " << c.getTitle()
+                                        << "（已修人數：" << c.getEnrolledCount()
+                                        << " / 上限：" << c.getCapacity() << "）" << endl;
+                                }
+                            }
+                        }
+                        else if (choice == 6) {
+                            cout << "感謝使用，再見！" << endl;
+                            break;
+                        }
 
-                if (choice == 1) {
-                    string sid, ccode;
-                    cout << "輸入學生ID：";
-                    getline(cin, sid);
-                    cout << "輸入課程代碼：";
-                    getline(cin, ccode);
-
-                    auto sit = find_if(students.begin(), students.end(), [&](Student& s) {
-                        return s.getId() == sid;
-                        });
-
-                    auto cit = find_if(courses.begin(), courses.end(), [&](Course& c) {
-                        return c.getCode() == ccode;
-                        });
-
-                    if (sit != students.end() && cit != courses.end()) {
-                        sit->enroll(&(*cit));
-                    }
-                    else {
-                        cout << "找不到該學生或課程。" << endl;
-                    }
-                }
-                else if (choice == 2) {
-                    string sid, ccode;
-                    cout << "輸入學生ID：";
-                    getline(cin, sid);
-                    cout << "輸入課程代碼：";
-                    getline(cin, ccode);
-
-                    auto sit = find_if(students.begin(), students.end(), [&](Student& s) {
-                        return s.getId() == sid;
-                        });
-
-                    auto cit = find_if(courses.begin(), courses.end(), [&](Course& c) {
-                        return c.getCode() == ccode;
-                        });
-
-                    if (sit != students.end() && cit != courses.end()) {
-                        sit->drop(&(*cit));
-                    }
-                    else {
-                        cout << "找不到該學生或課程。" << endl;
-                    }
-                }
-                else if (choice == 3) {
-                    string sid;
-                    cout << "輸入學生ID：";
-                    getline(cin, sid);
-                    auto sit = find_if(students.begin(), students.end(), [&](Student& s) {
-                        return s.getId() == sid;
-                        });
-                    if (sit != students.end()) {
-                        sit->printCourses();
-                    }
-                    else {
-                        cout << "找不到該學生。" << endl;
-                    }
-                }
-                else if (choice == 4) {
-                    string ccode;
-                    cout << "輸入課程代碼：";
-                    getline(cin, ccode);
-                    auto cit = find_if(courses.begin(), courses.end(), [&](Course& c) {
-                        return c.getCode() == ccode;
-                        });
-                    if (cit != courses.end()) {
-                        cit->printStudents();
-                    }
-                    else {
-                        cout << "找不到該課程。" << endl;
-                    }
-                }
-
-                else if (choice == 5) {
-                    if (courses.empty()) {
-                        cout << "尚未建立任何課程。" << endl;
-                    }
-                    else {
-                        cout << "所有課程清單：" << endl;
-                        for (const auto& c : courses) {
-                            cout << " - " << c.getCode() << ": " << c.getTitle()
-                                << "（已修人數：" << c.getEnrolledCount()
-                                << " / 上限：" << c.getCapacity() << "）" << endl;
+                        else {
+                            cout << "無效的選項，請重新輸入。" << endl;
                         }
                     }
-                }
-                else if (choice == 6) {
-                    cout << "感謝使用，再見！" << endl;
-                    break;
-                }
-
-                else {
-                    cout << "無效的選項，請重新輸入。" << endl;
-                }
-            }
-        }
+				}
+				else {
+					cout << "密碼錯誤，請重新登入。" << endl;
+			}
+			}
+			else {
+				cout << "找不到該學生ID。" << endl;
+			}
+		}
         else if (choice == 2) {
             cout << "老師登入成功！" << endl;
 
@@ -231,8 +201,6 @@ int main() {
         {
             cout << "無效的選擇，請重新選擇！" << endl;
         }
-
-
     }
     return 0;
 }
