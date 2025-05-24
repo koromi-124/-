@@ -41,7 +41,7 @@ int main() {
                 cout << "輸入密碼：";
                 getline(cin, pwd);
                 if (currentStudent->verifyPassword(pwd)) {
-                    cout << "✅ 登入成功！" << endl;
+                    cout << "登入成功！" << endl;
                     while (true) {
                         cout << endl << "===== 學生選課系統 =====" << endl;
                         cout << "1. 加選課程" << endl;
