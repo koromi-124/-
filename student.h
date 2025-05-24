@@ -23,6 +23,7 @@ public:
 
     string getId() const { return id; }
     string getName() const { return name; }
+	void setPassword(const string& newPassword) { password = newPassword; }
 
     void enroll(Course* course);
     void drop(Course* course);

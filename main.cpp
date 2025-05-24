@@ -49,7 +49,8 @@ int main() {
                         cout << "3. 顯示我的課表" << endl;
                         cout << "4. 顯示課程學生名單" << endl;
                         cout << "5. 顯示所有課程" << endl;
-                        cout << "6. 登出" << endl;
+						cout << "6. 更改密碼" << endl;
+                        cout << "7. 登出" << endl;
                         cout << "請輸入選項：";
                         cin >> choice;
                         cin.ignore();
@@ -101,11 +102,16 @@ int main() {
                                 }
                             }
                         }
-                        else if (choice == 6) {
-                            cout << "感謝使用，再見！" << endl;
-                            break;
-                        }
-
+						else if (choice == 6) {
+							string newPassword;
+							getline(cin, newPassword);
+							currentStudent->setPassword(newPassword);
+							cout << "密碼已更改成功！" << endl;
+						}
+						else if (choice == 7) {
+							cout << "已登出，感謝使用！" << endl;
+							break;
+						}
                         else {
                             cout << "無效的選項，請重新輸入。" << endl;
                         }
@@ -134,14 +140,12 @@ int main() {
                 cin.ignore();
 
                 if (choice == 1) {
-                    string id, name, pwd;
+                    string id, name;
                     cout << "輸入學生ID：";
                     getline(cin, id);
                     cout << "輸入學生姓名：";
                     getline(cin, name);
-                    cout << "設定學生密碼：";
-                    getline(cin, pwd);
-                    students.emplace_back(id, name, pwd);
+                    students.emplace_back(id, name, id);
                     cout << " 學生已新增。" << endl;
                 }
                 else if (choice == 2) {
