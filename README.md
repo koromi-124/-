@@ -17,5 +17,5 @@
 武儀慧: PPT 
 資工1A 張宜婷: UML、PPT 
 # PPT連結 
-![PPT](https://www.canva.com/design/DAGlMDv_XlA/yjI9whpH7qxHrAeWo9eVNA/edit?utm_content=DAGlMDv_XlA&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
+https://www.canva.com/design/DAGlMDv_XlA/yjI9whpH7qxHrAeWo9eVNA/editutm_content=DAGlMDv_XlA&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
 
